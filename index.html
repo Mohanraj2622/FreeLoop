@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>FreeLoop</title>
+
+    <!-- External Styles -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="Logo.png" type="image/png">
+</head>
+
+<body>
+
+    <!-- Top Menu -->
+    <nav class="top-menu">
+        <div class="logo">FreeLoop</div>
+        
+        <div class="search-bar">
+            <input type="text" placeholder="Search..." aria-label="Search">
+            <button><i class="fas fa-search"></i></button>
+        </div>
+    </nav>
+
+    <!-- Album Container -->
+    <div id="albumContainer" class="album-container"></div>
+
+    <!-- Bottom Menu -->
+    <div class="bottom-menu">
+        <a href="index.html" class="menu-item" aria-label="Home">
+            <i class="fas fa-home"></i><span>Home</span>
+        </a>
+        <a href="feedback.html" class="menu-item" aria-label="Feedback">
+            <i class="fas fa-comment-alt"></i><span>Feedback</span>
+        </a>
+        <a href="about.html" class="menu-item" aria-label="Album">
+            <i class="fas fa-info-circle"></i><span>About</span>
+        </a>        
+    </div>
+
+    <script>
+
+document.addEventListener("keydown", function (event) {
+  if (event.ctrlKey && (event.key === "=" || event.key === "-" || event.key === "0")) {
+    event.preventDefault();
+  }
+});
+
+document.addEventListener("wheel", function (event) {
+  if (event.ctrlKey) {
+    event.preventDefault();
+  }
+}, { passive: false });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            
+            const albums = [
+            {
+                name: "Harris Jayaraj",
+                cover: "harris jayaraj.png",
+                artist: "Artist 1",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Hiphop Tamizha",
+                cover: "Hiphop Tamizha.png",
+                artist: "Artist 2",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Album 3",
+                cover: "https://via.placeholder.com/200",
+                artist: "Artist 3",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Album 3",
+                cover: "https://via.placeholder.com/200",
+                artist: "Artist 3",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Album 3",
+                cover: "https://via.placeholder.com/200",
+                artist: "Artist 3",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Album 3",
+                cover: "https://via.placeholder.com/200",
+                artist: "Artist 3",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Album 3",
+                cover: "https://via.placeholder.com/200",
+                artist: "Artist 3",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Album 3",
+                cover: "https://via.placeholder.com/200",
+                artist: "Artist 3",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            {
+                name: "Album 3",
+                cover: "https://via.placeholder.com/200",
+                artist: "Artist 3",
+                url: "https://mohanraj2622.github.io/harish_playlist/"
+            },
+            // Add more albums as needed
+        ];
+
+        const albumContainer = document.getElementById("albumContainer");
+    const searchInput = document.querySelector(".search-bar input");
+
+    function renderAlbums(filteredAlbums) {
+        albumContainer.innerHTML = "";
+        const fragment = document.createDocumentFragment();
+
+        filteredAlbums.forEach(album => {
+            const albumElement = document.createElement("div");
+            albumElement.className = "album";
+            albumElement.innerHTML = `
+                <img src="${album.cover}" alt="${album.name}" class="album-cover">
+                <div class="album-title">${album.name}</div>
+                
+            `;
+            albumElement.addEventListener("click", () => window.location.href = album.url);
+            fragment.appendChild(albumElement);
+        });
+        albumContainer.appendChild(fragment);
+    }
+
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase();
+        const filteredAlbums = albums.filter(album =>
+            album.name.toLowerCase().includes(query) || album.artist.toLowerCase().includes(query)
+        );
+        renderAlbums(filteredAlbums);
+    });
+
+    renderAlbums(albums);
+});
+
+    </script>
+
+</body>
+</html>

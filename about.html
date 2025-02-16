@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About FreeLoop</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            text-align: center;
+        }
+
+        .top-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: #282828;
+            padding: 15px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .about-container {
+            margin-top: 80px;
+            padding: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        p {
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="top-menu">
+        <div class="logo">FreeLoop</div>
+    </nav>
+
+    <section class="about-container">
+        <h1>About FreeLoop</h1>
+        <p>FreeLoop is developed for educational purposes only. This platform aims to provide a hands-on learning
+            experience in App development, focusing on UI/UX design, JavaScript functionality, and responsive design.
+        </p>
+        <p>All content on this App is used strictly for non-commercial purposes. If you have any concerns or inquiries,
+            feel free to contact us.</p>
+    </section>
+    <!-- Bottom Menu -->
+    <div class="bottom-menu">
+        <a href="index.html" class="menu-item" aria-label="Home">
+            <i class="fas fa-home"></i><span>Home</span>
+        </a>
+        <a href="feedback.html" class="menu-item" aria-label="Feedback">
+            <i class="fas fa-comment-alt"></i><span>Feedback</span>
+        </a>
+        <a href="about.html" class="menu-item" aria-label="Album">
+            <i class="fas fa-info-circle"></i><span>About</span>
+        </a>
+    </div>
+    <script src="about.js">
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && (event.key === "=" || event.key === "-" || event.key === "0")) {
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener("wheel", function (event) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+    </script>
+</body>
+
+</html>
