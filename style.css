@@ -69,7 +69,6 @@ body {
     border: none;
     color: #b3b3b3;
     cursor: pointer;
-
 }
 
 .search-bar button:hover {
@@ -77,16 +76,11 @@ body {
 }
 
 @keyframes gradientAnimation {
-    0% {
+    0%, 100% {
         background-position: 0% 50%;
     }
-
     50% {
         background-position: 100% 50%;
-    }
-
-    100% {
-        background-position: 0% 50%;
     }
 }
 
@@ -119,23 +113,17 @@ body {
 
 .album-cover {
     width: 150px;
-    /* Fixed width */
     height: 150px;
-    /* Fixed height */
     border-radius: 10px;
     margin: 10px 0;
-    /* Added margin for top and bottom spacing */
     object-fit: cover;
-    /* Ensures the image covers the area without distortion */
 }
 
-.album-title,
-.album-artist {
+.album-title, .album-artist {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     width: 100%;
-    /* Ensure text doesn't overflow the container */
 }
 
 /* Bottom Menu */
@@ -200,9 +188,7 @@ body {
 
     .album-cover {
         width: 120px;
-        /* Adjusted for smaller screens */
         height: 120px;
-        /* Adjusted for smaller screens */
     }
 }
 
@@ -242,16 +228,12 @@ body {
     }
 
     .album {
-        padding: 10;
+        padding: 10px;
     }
 
     .album-cover {
-        border-radius: 15%;
-        padding: 0px;
-        width: 150px;
-        /* Further adjusted for very small screens */
-        height: 150px;
-        /* Further adjusted for very small screens */
+        width: 100px;
+        height: 100px;
     }
 
     .bottom-menu {
