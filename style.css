@@ -69,7 +69,7 @@ body {
     border: none;
     color: #b3b3b3;
     cursor: pointer;
-    
+
 }
 
 .search-bar button:hover {
@@ -77,9 +77,17 @@ body {
 }
 
 @keyframes gradientAnimation {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 /* Album Section */
@@ -110,18 +118,24 @@ body {
 }
 
 .album-cover {
-    width: 150px; /* Fixed width */
-    height: 150px; /* Fixed height */
+    width: 150px;
+    /* Fixed width */
+    height: 150px;
+    /* Fixed height */
     border-radius: 10px;
-    margin: 10px 0; /* Added margin for top and bottom spacing */
-    object-fit: cover; /* Ensures the image covers the area without distortion */
+    margin: 10px 0;
+    /* Added margin for top and bottom spacing */
+    object-fit: cover;
+    /* Ensures the image covers the area without distortion */
 }
 
-.album-title, .album-artist {
+.album-title,
+.album-artist {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    width: 100%; /* Ensure text doesn't overflow the container */
+    width: 100%;
+    /* Ensure text doesn't overflow the container */
 }
 
 /* Bottom Menu */
@@ -185,8 +199,10 @@ body {
     }
 
     .album-cover {
-        width: 120px; /* Adjusted for smaller screens */
-        height: 120px; /* Adjusted for smaller screens */
+        width: 120px;
+        /* Adjusted for smaller screens */
+        height: 120px;
+        /* Adjusted for smaller screens */
     }
 }
 
@@ -225,12 +241,17 @@ body {
         padding: 70px 5px 60px;
     }
 
+    .album {
+        padding: 10;
+    }
+
     .album-cover {
         border-radius: 15%;
-        
-    padding: 10px;
-        width: 100px; /* Further adjusted for very small screens */
-        height: 100px; /* Further adjusted for very small screens */
+        padding: 0px;
+        width: 150px;
+        /* Further adjusted for very small screens */
+        height: 150px;
+        /* Further adjusted for very small screens */
     }
 
     .bottom-menu {
