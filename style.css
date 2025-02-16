@@ -226,6 +226,9 @@ body {
     }
 
     .album-cover {
+        border-radius: 15%;
+        
+    padding: 10px;
         width: 100px; /* Further adjusted for very small screens */
         height: 100px; /* Further adjusted for very small screens */
     }
