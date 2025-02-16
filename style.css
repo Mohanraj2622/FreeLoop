@@ -69,6 +69,7 @@ body {
     border: none;
     color: #b3b3b3;
     cursor: pointer;
+    
 }
 
 .search-bar button:hover {
@@ -98,6 +99,9 @@ body {
     transition: transform 0.2s, background-color 0.2s;
     cursor: pointer;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .album:hover {
@@ -106,16 +110,18 @@ body {
 }
 
 .album-cover {
-    width: 150px;
-    height: 150px;
+    width: 150px; /* Fixed width */
+    height: 150px; /* Fixed height */
     border-radius: 10px;
-    margin-bottom: 10px;
+    margin: 10px 0; /* Added margin for top and bottom spacing */
+    object-fit: cover; /* Ensures the image covers the area without distortion */
 }
 
 .album-title, .album-artist {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    width: 100%; /* Ensure text doesn't overflow the container */
 }
 
 /* Bottom Menu */
@@ -153,16 +159,86 @@ body {
 
 /* Responsive */
 @media (max-width: 768px) {
+    .top-menu {
+        padding: 10px;
+    }
+
+    .logo {
+        font-size: 1.2rem;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .nav-links a {
+        font-size: 0.75rem;
+    }
+
+    .search-bar input {
+        width: 100px;
+    }
+
     .album-container {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
         padding: 80px 10px 70px;
     }
+
+    .album-cover {
+        width: 120px; /* Adjusted for smaller screens */
+        height: 120px; /* Adjusted for smaller screens */
+    }
 }
 
 @media (max-width: 480px) {
+    .top-menu {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 10px;
+    }
+
+    .logo {
+        font-size: 1.5rem;
+        margin-bottom: 5px;
+    }
+
+    .nav-links {
+        gap: 5px;
+    }
+
+    .nav-links a {
+        font-size: 0.7rem;
+    }
+
+    .search-bar {
+        width: 94%;
+        padding: 10px;
+    }
+
+    .search-bar input {
+        width: 80%;
+    }
+
     .album-container {
         grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
         gap: 10px;
         padding: 70px 5px 60px;
+    }
+
+    .album-cover {
+        width: 100px; /* Further adjusted for very small screens */
+        height: 100px; /* Further adjusted for very small screens */
+    }
+
+    .bottom-menu {
+        padding: 5px 0;
+    }
+
+    .menu-item {
+        font-size: 0.7rem;
+    }
+
+    .menu-item i {
+        font-size: 1rem;
     }
 }
