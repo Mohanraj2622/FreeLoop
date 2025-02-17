@@ -1,19 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>FreeLoop</title>
-
     <!-- External Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Logo.png" type="image/png">
 </head>
-
 <body>
-
     <!-- Top Menu -->
     <nav class="top-menu">
         <div class="logo">FreeLoop</div>
@@ -22,11 +18,9 @@
             <input type="text" placeholder="Search..." aria-label="Search">
             <button><i class="fas fa-search"></i></button>
         </div>
-    </nav>
-
+    </nav
     <!-- Album Container -->
     <div id="albumContainer" class="album-container"></div>
-
     <!-- Bottom Menu -->
     <div class="bottom-menu">
         <a href="index.html" class="menu-item" aria-label="Home">
@@ -39,28 +33,14 @@
             <i class="fas fa-info-circle"></i><span>About</span>
         </a>        
     </div>
-<div id="offlineMessage" style="display: none; background: red; color: white; padding: 10px; text-align: center;">
-  No Internet Connection! Please reconnect.
-</div>
-
 <script>
-  function updateOnlineStatus() {
-    let offlineMessage = document.getElementById("offlineMessage");
-    if (!navigator.onLine) {
-      offlineMessage.style.display = "block";
-    } else {
-      offlineMessage.style.display = "none";
-    }
-  }
-
-  // Run on load and listen for changes
-  window.addEventListener("load", updateOnlineStatus);
-  window.addEventListener("offline", updateOnlineStatus);
-  window.addEventListener("online", updateOnlineStatus);
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/sw.js").then(() => {
+    console.log("Service Worker Registered");
+  });
+}
 </script>
-
-    <script>
-
+<script>
 document.addEventListener("keydown", function (event) {
   if (event.ctrlKey && (event.key === "=" || event.key === "-" || event.key === "0")) {
     event.preventDefault();
@@ -89,7 +69,7 @@ document.addEventListener("wheel", function (event) {
                 url: "https://mohanraj2622.github.io/hiphop_tamizha/"
             },
             {
-                name: "S.P.B",
+                name: "SPB",
                 cover: "S-P-B.jpg",
                 artist: "Artist 3",
                 url: "index.html"
@@ -170,8 +150,6 @@ document.addEventListener("wheel", function (event) {
 
     renderAlbums(albums);
 });
-
     </script>
-
 </body>
 </html>
