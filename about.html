@@ -71,23 +71,6 @@
         <div id="offlineMessage" style="display: none; background: red; color: white; padding: 10px; text-align: center;">
   No Internet Connection! Please reconnect.
 </div>
-
-<script>
-  function updateOnlineStatus() {
-    let offlineMessage = document.getElementById("offlineMessage");
-    if (!navigator.onLine) {
-      offlineMessage.style.display = "block";
-    } else {
-      offlineMessage.style.display = "none";
-    }
-  }
-
-  // Run on load and listen for changes
-  window.addEventListener("load", updateOnlineStatus);
-  window.addEventListener("offline", updateOnlineStatus);
-  window.addEventListener("online", updateOnlineStatus);
-</script>
-
     </div>
     <script src="about.js">
         document.addEventListener("keydown", function (event) {
