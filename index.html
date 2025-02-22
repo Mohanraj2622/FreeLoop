@@ -1,161 +1,789 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>Play Ease</title>
+    <title>FreeLoop</title>
     <!-- External Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
     <link rel="icon" href="Logo.png" type="image/png">
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        /* Enhanced Top Menu */
+        .top-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(18, 18, 18, 0.98);
+            padding: 15px 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #ff6f61, #f6d365, #00bcd4, #8e44ad);
+            background-size: 300% 300%;
+            animation: gradientAnimation 10s ease infinite;
+            -webkit-background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Enhanced Search Bar */
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background-color: #282828;
+            border-radius: 25px;
+            padding: 8px 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-bar:focus-within {
+            background-color: #383838;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar input {
+            background: none;
+            border: none;
+            color: #fff;
+            outline: none;
+            width: 200px;
+            font-size: 1rem;
+            padding: 5px;
+        }
+
+        /* Enhanced Album Grid */
+        .album-container {
+            display: grid;
+            margin-top: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            padding: 100px 25px 100px;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+        }
+
+        .album {
+            background-color: #282828;
+            border-radius: 15px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .album:hover {
+            background-color: #383838;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .album-cover {
+            width: 180px;
+            height: 180px;
+            border-radius: 12px;
+            margin: 10px 0;
+            object-fit: cover;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .album:hover .album-cover {
+            transform: scale(1.05);
+        }
+
+        /* Enhanced Bottom Menu */
+        .bottom-menu {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-around;
+            background-color: rgba(18, 18, 18, 0.98);
+            padding: 15px 0;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .menu-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #b3b3b3;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            padding: 8px 15px;
+            border-radius: 10px;
+        }
+
+        .menu-item:hover {
+            color: #fff;
+            background-color: #282828;
+            transform: translateY(-2px);
+        }
+
+        /* Feedback Modal */
+        .feedback-modal {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #282828;
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+        }
+
+        .feedback-modal h3 {
+            margin-top: 0;
+            color: #fff;
+            text-align: center;
+        }
+
+        .feedback-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feedback-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background-color: #383838;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .feedback-item:hover {
+            background-color: #484848;
+            transform: translateX(5px);
+        }
+
+        .feedback-item i {
+            color: #b3b3b3;
+        }
+
+        .feedback-item.submitted {
+            background-color: #2e4a2e;
+            border-left: 4px solid #4CAF50;
+        }
+
+        .feedback-status {
+            font-size: 0.8rem;
+            color: #4CAF50;
+            margin-left: 10px;
+        }
+
+        /* Loading indicator */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Add these new styles */
+        .more-modal {
+            display: none;
+            position: fixed;
+            bottom: 70px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #282828;
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 -2px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1001;
+        }
+
+        .more-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .more-item {
+            padding: 12px 15px;
+            margin: 8px 0;
+            background-color: #383838;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .more-item:hover {
+            background-color: #484848;
+            transform: translateX(5px);
+        }
+
+        .content-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #282828;
+            border-radius: 15px;
+            padding: 20px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1002;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Form styles */
+        .form-container {
+            width: 100%;
+        }
+
+        .form-container input,
+        .form-container textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 5px;
+            background: #333;
+            color: white;
+        }
+
+        .form-container button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            background: #ff5733;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .album-container {
+                grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+                gap: 15px;
+                padding: 90px 15px 90px;
+            }
+
+            .album-cover {
+                width: 140px;
+                height: 140px;
+            }
+
+            .search-bar input {
+                width: 150px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .top-menu {
+                padding: 12px 15px;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            .album-container {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 12px;
+                padding: 80px 10px 80px;
+            }
+
+            .album-cover {
+                width: 120px;
+                height: 120px;
+            }
+
+            .feedback-modal {
+                width: 85%;
+            }
+        }
+    </style>
 </head>
+
 <body>
+
     <!-- Top Menu -->
     <nav class="top-menu">
-        <div class="logo">Play Ease</div>
-        
+        <div class="logo">FreeLoop</div>
         <div class="search-bar">
-            <input type="text" placeholder="Search..." aria-label="Search">
+            <input type="text" placeholder="Search artists, albums..." aria-label="Search">
             <button><i class="fas fa-search"></i></button>
         </div>
-    </nav
+    </nav>
+
     <!-- Album Container -->
     <div id="albumContainer" class="album-container"></div>
-    <!-- Bottom Menu -->
-    <div class="bottom-menu">
-        <a href="https://mohanraj2622.github.io/FreeLoop/" class="menu-item" aria-label="Home">
-            <i class="fas fa-home"></i><span>Home</span>
-        </a>
-        <a href="https://mohanraj2622.github.io/feedback/" class="menu-item" aria-label="Feedback">
-            <i class="fas fa-comment-alt"></i><span>Feedback</span>
-        </a>
-        <a href="https://mohanraj2622.github.io/freeloopabout/" class="menu-item" aria-label="Album">
-            <i class="fas fa-info-circle"></i><span>About</span>
-        </a>        
-    </div>
-<script>
-document.addEventListener("keydown", function (event) {
-  if (event.ctrlKey && (event.key === "=" || event.key === "-" || event.key === "0")) {
-    event.preventDefault();
-  }
-});
 
-document.addEventListener("wheel", function (event) {
-  if (event.ctrlKey) {
-    event.preventDefault();
-  }
-}, { passive: false });
+    <!-- Add loading overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Feedback Modal -->
+    <div id="feedbackModal" class="feedback-modal">
+        <h3>Select an Album for Play</h3>
+        <ul class="feedback-list" id="feedbackList"></ul>
+    </div>
+
+    <div class="bottom-menu">
+        <a href="index.html" class="menu-item" aria-label="Home">
+            <i class="fas fa-home"></i>
+            <span>Home</span>
+        </a>
+        <a href="#" class="menu-item" id="feedbackButton" aria-label="Feedback">
+            <i class="fas fa-compact-disc"></i>
+            <span>Album List</span>
+        </a>
+        <a href="#" class="menu-item" id="moreButton" aria-label="More">
+            <i class="fas fa-ellipsis-h"></i>
+            <span>More</span>
+        </a>
+    </div>
+
+    <!-- Add More Modal -->
+    <div id="moreModal" class="more-modal">
+        <h3>More Options</h3>
+        <ul class="more-list">
+            <li class="more-item" data-action="about">
+                <span>About FreeLoop</span>
+                <i class="fas fa-chevron-right"></i>
+            </li>
+            <li class="more-item" data-action="feedback">
+                <span>Submit Feedback</span>
+                <i class="fas fa-chevron-right"></i>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Add Content Modal -->
+    <div id="contentModal" class="content-modal">
+        <button class="modal-close">&times;</button>
+        <div id="modalContent"></div>
+    </div>
+    <script>
+
+        document.addEventListener("keydown", function (event) {
+            if (event.ctrlKey && (event.key === "=" || event.key === "-" || event.key === "0")) {
+                event.preventDefault();
+            }
+        });
+
+        document.addEventListener("wheel", function (event) {
+            if (event.ctrlKey) {
+                event.preventDefault();
+            }
+        }, { passive: false });
 
         document.addEventListener("DOMContentLoaded", () => {
-            
+            // Album data structure
             const albums = [
-            {
-                name: "Harris Jayaraj",
-                cover: "harris jayaraj.png",
-                artist: "Artist 1",
-                url: "https://mohanraj2622.github.io/harish_playlist/"
-            },
-            {
-                name: "Hiphop Tamizha",
-                cover: "Hiphop Tamizha.png",
-                artist: "Artist 2",
-                url: "https://mohanraj2622.github.io/hiphop_tamizha/"
-            },
-            {
-                name: "SPB",
-                cover: "S-P-B.jpg",
-                artist: "Artist 3",
-                url: "index.html"
-            },
-            {
-                name: "AR Rahman",
-                cover: "Ar rahman.png",
-                artist: "Artist 3",
-                url: "index.html"
-            },
-            {
-                name: "Ilayaraja",
-                cover: "ilayaraja.png",
-                artist: "Artist 3",
-                url: "index.html"
-            },
-            {
-                name: "Anirudh",
-                cover: "aniruth.jpg",
-                artist: "Artist 3",
-                url: "index.html"
-            },
-            {
-                name: "Video Song",
-                cover: "yandi-main-cover.png",
-                artist: "Artist 3",
-                url: "https://mohanraj2622.github.io/myfav_video/"
-            },
-            {
-                name: "Andrea",
-                cover: "andrea jeremiah.png",
-                artist: "Artist 3",
-                url: "https://mohanraj2622.github.io/Anirudh/"
-            },
-            {
-                name: "G.V Prakash",
-                cover: "gv prakash.png",
-                artist: "Artist 3",
-                url: "index.html"
-            },
-            {
-                name: "Yuvan Shanker",
-                cover: "yuvan shanker.png",
-                artist: "Artist 3",
-                url: "index.html"
-            },
-            {
-                name: "Sai Abhyankkar",
-                cover: "sai-main-cover.jpg",
-                artist: "Artist 3",
-                url: "https://mohanraj2622.github.io/sai/"
-            },
-            {
-                name: "Murugan Songs",
-                cover: "murugan-main-cover.jpg",
-                artist: "Artist 3",
-                url: "https://mohanraj2622.github.io/murugan-freeloop/"
-            },
+                {
+                    id: "harris-jayaraj",
+                    name: "Harris Jayaraj",
+                    cover: "harris jayaraj.png",
+                    artist: "Music Director",
+                    url: "https://mohanraj2622.github.io/harish_playlist/"
+                },
+                {
+                    id: "hiphop-tamizha",
+                    name: "Hiphop Tamizha",
+                    cover: "Hiphop Tamizha.png",
+                    artist: "Music Director",
+                    url: "https://mohanraj2622.github.io/hiphop_tamizha/"
+                },
+                {
+                    id: "spb",
+                    name: "S.P.B",
+                    cover: "S-P-B.jpg",
+                    artist: "Singer",
+                    url: "index.html"
+                },
+                {
+                    id: "ar-rahman",
+                    name: "AR Rahman",
+                    cover: "Ar rahman.png",
+                    artist: "Music Director",
+                    url: "index.html"
+                },
+                {
+                    id: "ilayaraja",
+                    name: "Ilayaraja",
+                    cover: "ilayaraja.png",
+                    artist: "Music Director",
+                    url: "index.html"
+                },
+                {
+                    id: "anirudh",
+                    name: "Anirudh",
+                    cover: "aniruth.jpg",
+                    artist: "Music Director",
+                    url: "index.html"
+                },
+                {
+                    id: "nishan",
+                    name: "Video Song",
+                    cover: "yandi-main-cover.png",
+                    artist: "Album Song",
+                    url: "https://mohanraj2622.github.io/myfav_video/"
+                },
+                {
+                    id: "andrea",
+                    name: "Andrea",
+                    cover: "andrea jeremiah.png",
+                    artist: "Singer",
+                    url: "https://mohanraj2622.github.io/Anirudh/"
+                },
+                {
+                    id: "gv-prakash",
+                    name: "G.V Prakash",
+                    cover: "gv prakash.png",
+                    artist: "Music Director",
+                    url: "index.html"
+                },
+                {
+                    id: "yuvan",
+                    name: "Yuvan Shanker",
+                    cover: "yuvan shanker.png",
+                    artist: "Music Director",
+                    url: "index.html"
+                },
+                {
+                    id: "Murugan",
+                    name: "Murugan Songs",
+                    cover: "murugan-main-cover.jpg",
+                    artist: "Music Director",
+                    url: "https://mohanraj2622.github.io/murugan-freeloop/"
+                },
+                {
+                    id: "Sai-abhyankkar",
+                    name: "Sai Abhyankkar",
+                    cover: "sai-main-cover.jpg",
+                    artist: "Singer",
+                    url: "https://mohanraj2622.github.io/sai/"
+                }
+            ];
 
-                
-            // Add more albums as needed
-        ];
+            // DOM Elements
+            const albumContainer = document.getElementById("albumContainer");
+            const searchInput = document.querySelector(".search-bar input");
+            const albumListModal = document.getElementById("feedbackModal"); // Reusing the modal
+            const albumListButton = document.getElementById("feedbackButton"); // Reusing the button
+            const albumList = document.getElementById("feedbackList"); // Reusing the list
+            const loadingOverlay = document.getElementById("loadingOverlay");
+            const moreButton = document.getElementById("moreButton");
+            const moreModal = document.getElementById("moreModal");
+            const contentModal = document.getElementById("contentModal");
+            const modalContent = document.getElementById("modalContent");
+            const modalClose = document.querySelector(".modal-close");
+            // More button click handler
+            moreButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                moreModal.style.display = moreModal.style.display === "block" ? "none" : "block";
+            });
 
-        const albumContainer = document.getElementById("albumContainer");
-    const searchInput = document.querySelector(".search-bar input");
-    function renderAlbums(filteredAlbums) {
-        albumContainer.innerHTML = "";
-        const fragment = document.createDocumentFragment();
+            // Handle more menu item clicks
+            document.querySelectorAll('.more-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    const action = item.dataset.action;
+                    moreModal.style.display = "none";
 
-        filteredAlbums.forEach(album => {
-            const albumElement = document.createElement("div");
-            albumElement.className = "album";
-            albumElement.innerHTML = `
+                    if (action === "about") {
+                        modalContent.innerHTML = `
+                    <h2>About FreeLoop</h2>
+                    <p>FreeLoop is developed for educational purposes only. This platform aims to provide a hands-on learning
+                        experience in App development, focusing on UI/UX design, JavaScript functionality, and responsive design.</p>
+                    <p>All content on this App is used strictly for non-commercial purposes. If you have any concerns or inquiries,
+                        feel free to contact us.</p>
+                `;
+                    } else if (action === "feedback") {
+                        modalContent.innerHTML = `
+                    <h2>Give Your Feedback</h2>
+                    <div class="form-container">
+                        <form id="feedbackForm" action="https://usebasin.com/f/2cdcfe6cf4b2" method="POST">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                            <input type="email" name="email" placeholder="Your Email" required>
+                            <textarea name="message" rows="4" placeholder="Your Feedback or Song Request" required></textarea>
+                            <button type="submit">Submit</button>
+                        </form>
+                        <p id="response" style="text-align:center; margin-top:10px;"></p>
+                    </div>
+                `;
+
+                        // Add form submission handler
+                        const form = document.getElementById("feedbackForm");
+                        const responseMessage = document.getElementById("response");
+
+                        form.addEventListener("submit", function (event) {
+                            event.preventDefault();
+                            const formData = new FormData(form);
+
+                            fetch(form.action, {
+                                method: "POST",
+                                body: formData
+                            })
+                                .then(response => response.text())
+                                .then(data => {
+                                    responseMessage.textContent = "Thank you! Your feedback has been submitted.";
+                                    form.reset();
+                                })
+                                .catch(error => {
+                                    responseMessage.textContent = "Error submitting feedback. Please try again.";
+                                    console.error("Error:", error);
+                                });
+                        });
+                    }
+
+                    contentModal.style.display = "block";
+                });
+            });
+
+            // Close modal button handler
+            modalClose.addEventListener("click", () => {
+                contentModal.style.display = "none";
+            });
+
+            // Close modals when clicking outside
+            document.addEventListener("click", (e) => {
+                if (!moreModal.contains(e.target) && !moreButton.contains(e.target)) {
+                    moreModal.style.display = "none";
+                }
+                if (!contentModal.contains(e.target) && contentModal.style.display === "block" && !e.target.closest('.more-item')) {
+                    contentModal.style.display = "none";
+                }
+            });
+
+            // State Management
+            const AppState = {
+                recentlyViewed: JSON.parse(localStorage.getItem('recentlyViewed')) || [],
+                favorites: JSON.parse(localStorage.getItem('favorites')) || [],
+
+                addToRecentlyViewed(albumId) {
+                    this.recentlyViewed = [albumId, ...this.recentlyViewed.filter(id => id !== albumId)].slice(0, 10);
+                    this.saveToLocalStorage('recentlyViewed', this.recentlyViewed);
+                },
+
+                toggleFavorite(albumId) {
+                    if (this.favorites.includes(albumId)) {
+                        this.favorites = this.favorites.filter(id => id !== albumId);
+                    } else {
+                        this.favorites.push(albumId);
+                    }
+                    this.saveToLocalStorage('favorites', this.favorites);
+                },
+
+                isFavorite(albumId) {
+                    return this.favorites.includes(albumId);
+                },
+
+                saveToLocalStorage(key, data) {
+                    localStorage.setItem(key, JSON.stringify(data));
+                }
+            };
+
+            // Loading Manager
+            const LoadingManager = {
+                show() {
+                    loadingOverlay.style.display = 'flex';
+                },
+                hide() {
+                    loadingOverlay.style.display = 'none';
+                }
+            };
+
+            // URL Navigation Handler
+            async function handleUrlNavigation(url, albumId) {
+                try {
+                    if (!url) return;
+
+                    LoadingManager.show();
+                    AppState.addToRecentlyViewed(albumId);
+
+                    // Simulate small delay for loading effect
+                    await new Promise(resolve => setTimeout(resolve, 500));
+
+                    window.location.href = url;
+                } catch (error) {
+                    console.error('Navigation error:', error);
+                    alert('Error loading the page. Please try again.');
+                } finally {
+                    LoadingManager.hide();
+                }
+            }
+
+            // Album Rendering
+            function renderAlbums(filteredAlbums) {
+                albumContainer.innerHTML = "";
+                const fragment = document.createDocumentFragment();
+
+                filteredAlbums.forEach(album => {
+                    const albumElement = document.createElement("div");
+                    albumElement.className = "album";
+
+                    const isFavorite = AppState.isFavorite(album.id);
+
+                    albumElement.innerHTML = `
+                <div class="album-header">
+                    <i class="fas fa-heart favorite-icon ${isFavorite ? 'active' : ''}" 
+                       data-album-id="${album.id}"></i>
+                </div>
                 <img src="${album.cover}" alt="${album.name}" class="album-cover">
                 <div class="album-title">${album.name}</div>
-                
+                <div class="album-artist">${album.artist}</div>
             `;
-            albumElement.addEventListener("click", () => window.location.href = album.url);
-            fragment.appendChild(albumElement);
+
+                    // Add event listeners
+                    albumElement.querySelector('.favorite-icon').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        AppState.toggleFavorite(album.id);
+                        renderAlbums(filteredAlbums);
+                    });
+
+                    albumElement.addEventListener("click", () => handleUrlNavigation(album.url, album.id));
+                    fragment.appendChild(albumElement);
+                });
+
+                albumContainer.appendChild(fragment);
+            }
+
+            // Update Album List Modal
+            function updateAlbumList() {
+                albumList.innerHTML = albums.map(album => `
+            <li class="feedback-item" data-album-id="${album.id}" data-url="${album.url}">
+                <div class="feedback-item-content">
+                    <span class="feedback-item-name">${album.name}</span>
+                    <span class="feedback-item-artist">${album.artist}</span>
+                </div>
+                <i class="fas fa-chevron-right"></i>
+            </li>
+        `).join("");
+
+                // Add click handlers
+                document.querySelectorAll('.feedback-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        const albumId = item.dataset.albumId;
+                        const url = item.dataset.url;
+                        handleUrlNavigation(url, albumId);
+                    });
+                });
+            }
+
+            // Search Handler
+            function handleSearch() {
+                const query = searchInput.value.toLowerCase();
+                const filteredAlbums = albums.filter(album =>
+                    album.name.toLowerCase().includes(query) ||
+                    album.artist.toLowerCase().includes(query)
+                );
+                renderAlbums(filteredAlbums);
+            }
+
+            // Event Listeners
+            searchInput.addEventListener("input", handleSearch);
+
+            albumListButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                albumListModal.style.display = albumListModal.style.display === "block" ? "none" : "block";
+                if (albumListModal.style.display === "block") {
+                    updateAlbumList();
+                }
+            });
+
+            document.addEventListener("click", (e) => {
+                if (!albumListModal.contains(e.target) && !albumListButton.contains(e.target)) {
+                    albumListModal.style.display = "none";
+                }
+            });
+
+            // Update UI text from "Feedback" to "Album List"
+            document.querySelector('#feedbackButton span').textContent = 'Album List';
+            document.querySelector('#feedbackModal h3').textContent = 'Select an Album';
+
+            // Initialize the app
+            renderAlbums(albums);
         });
-        albumContainer.appendChild(fragment);
-    }
-
-    searchInput.addEventListener("input", () => {
-        const query = searchInput.value.toLowerCase();
-        const filteredAlbums = albums.filter(album =>
-            album.name.toLowerCase().includes(query) || album.artist.toLowerCase().includes(query)
-        );
-        renderAlbums(filteredAlbums);
-    });
-
-    renderAlbums(albums);
-});
     </script>
+
 </body>
+
 </html>
