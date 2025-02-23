@@ -45,7 +45,6 @@
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
 
-        /* Enhanced Search Bar */
         .search-bar {
             display: flex;
             align-items: center;
@@ -54,11 +53,7 @@
             padding: 8px 15px;
             transition: all 0.3s ease;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .search-bar:focus-within {
-            background-color: #383838;
-            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.2);
+            max-width: 300px;
         }
 
         .search-bar input {
@@ -66,9 +61,90 @@
             border: none;
             color: #fff;
             outline: none;
-            width: 200px;
+            width: 0;
+            padding: 0;
+            transition: all 0.4s ease;
             font-size: 1rem;
-            padding: 5px;
+        }
+
+        .search-button {
+            background: none;
+            border: none;
+            color: #888;
+            cursor: pointer;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+        }
+
+        .search-button i {
+            transition: all 0.3s ease;
+        }
+
+        /* Expanded state */
+        .search-bar.active {
+            background-color: #383838;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-bar.active input {
+            width: 200px;
+            padding: 5px 10px;
+        }
+
+        .search-bar.active .search-button {
+            background-color: #ff5733;
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Hover effects */
+        .search-button:hover {
+            background-color: #383838;
+            transform: scale(1.1);
+        }
+
+        .search-bar.active .search-button:hover {
+            background-color: #ff4081;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        /* Focus effects */
+        .search-bar:focus-within {
+            box-shadow: 0 4px 20px rgba(255, 87, 51, 0.2);
+        }
+
+        /* Placeholder styling */
+        .search-bar input::placeholder {
+            color: #666;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .search-bar.active input::placeholder {
+            opacity: 1;
+        }
+
+        /* Animation keyframes for initial load */
+        @keyframes searchAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .search-bar {
+            animation: searchAppear 0.5s ease forwards;
         }
 
         /* Enhanced Album Grid */
@@ -82,7 +158,30 @@
             overflow-y: auto;
         }
 
+        .album-header {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            z-index: 2;
+        }
+
+        .favorite-icon {
+            color: #888;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .favorite-icon:hover {
+            transform: scale(1.2);
+        }
+
+        .favorite-icon.active {
+            color: #ff4081;
+        }
+
         .album {
+            position: relative;
             background-color: #282828;
             border-radius: 15px;
             padding: 20px;
@@ -99,6 +198,18 @@
             background-color: #383838;
             transform: translateY(-5px);
             box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .album-title {
+            margin-top: 10px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .album-artist {
+            margin-top: 5px;
+            font-size: 0.9em;
+            color: #b3b3b3;
         }
 
         .album-cover {
@@ -322,6 +433,7 @@
             border-radius: 5px;
             background: #333;
             color: white;
+            width: 95%;
         }
 
         .form-container button {
@@ -387,8 +499,10 @@
     <nav class="top-menu">
         <div class="logo">FreeLoop</div>
         <div class="search-bar">
-            <input type="text" placeholder="Search artists, albums..." aria-label="Search">
-            <button><i class="fas fa-search"></i></button>
+            <input type="text" placeholder="Search artists, albums...">
+            <button class="search-button">
+                <i class="fas fa-search"></i>
+            </button>
         </div>
     </nav>
 
@@ -442,19 +556,6 @@
         <div id="modalContent"></div>
     </div>
     <script>
-
-        document.addEventListener("keydown", function (event) {
-            if (event.ctrlKey && (event.key === "=" || event.key === "-" || event.key === "0")) {
-                event.preventDefault();
-            }
-        });
-
-        document.addEventListener("wheel", function (event) {
-            if (event.ctrlKey) {
-                event.preventDefault();
-            }
-        }, { passive: false });
-
         document.addEventListener("DOMContentLoaded", () => {
             // Album data structure
             const albums = [
@@ -501,7 +602,7 @@
                     url: "index.html"
                 },
                 {
-                    id: "nishan",
+                    id: "Video Song",
                     name: "Video Song",
                     cover: "yandi-main-cover.png",
                     artist: "Album Song",
@@ -523,115 +624,39 @@
                 },
                 {
                     id: "yuvan",
-                    name: "Yuvan Shanker",
-                    cover: "yuvan shanker.png",
+                    name: "Yuvan Shankkar",
+                    cover: "yuvan shankar.png",
                     artist: "Music Director",
                     url: "index.html"
                 },
                 {
-                    id: "Murugan",
-                    name: "Murugan Songs",
-                    cover: "murugan-main-cover.jpg",
-                    artist: "Music Director",
-                    url: "https://mohanraj2622.github.io/murugan-freeloop/"
-                },
-                {
-                    id: "Sai-abhyankkar",
+                    id: "Sai Abhyankkar",
                     name: "Sai Abhyankkar",
                     cover: "sai-main-cover.jpg",
-                    artist: "Singer",
+                    artist: "Music Director",
                     url: "https://mohanraj2622.github.io/sai/"
+                },
+                {
+                    id: "Murugan Songs",
+                    name: "Murugan",
+                    cover: "murugan-main-cover.jpg",
+                    artist: "Music Mix",
+                    url: "https://mohanraj2622.github.io/murugan-freeloop/"
                 }
             ];
 
             // DOM Elements
             const albumContainer = document.getElementById("albumContainer");
             const searchInput = document.querySelector(".search-bar input");
-            const albumListModal = document.getElementById("feedbackModal"); // Reusing the modal
-            const albumListButton = document.getElementById("feedbackButton"); // Reusing the button
-            const albumList = document.getElementById("feedbackList"); // Reusing the list
+            const albumListModal = document.getElementById("feedbackModal");
+            const albumListButton = document.getElementById("feedbackButton");
+            const albumList = document.getElementById("feedbackList");
             const loadingOverlay = document.getElementById("loadingOverlay");
             const moreButton = document.getElementById("moreButton");
             const moreModal = document.getElementById("moreModal");
             const contentModal = document.getElementById("contentModal");
             const modalContent = document.getElementById("modalContent");
             const modalClose = document.querySelector(".modal-close");
-            // More button click handler
-            moreButton.addEventListener("click", (e) => {
-                e.preventDefault();
-                moreModal.style.display = moreModal.style.display === "block" ? "none" : "block";
-            });
-
-            // Handle more menu item clicks
-            document.querySelectorAll('.more-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    const action = item.dataset.action;
-                    moreModal.style.display = "none";
-
-                    if (action === "about") {
-                        modalContent.innerHTML = `
-                    <h2>About FreeLoop</h2>
-                    <p>FreeLoop is developed for educational purposes only. This platform aims to provide a hands-on learning
-                        experience in App development, focusing on UI/UX design, JavaScript functionality, and responsive design.</p>
-                    <p>All content on this App is used strictly for non-commercial purposes. If you have any concerns or inquiries,
-                        feel free to contact us.</p>
-                `;
-                    } else if (action === "feedback") {
-                        modalContent.innerHTML = `
-                    <h2>Give Your Feedback</h2>
-                    <div class="form-container">
-                        <form id="feedbackForm" action="https://usebasin.com/f/2cdcfe6cf4b2" method="POST">
-                            <input type="text" name="name" placeholder="Your Name" required>
-                            <input type="email" name="email" placeholder="Your Email" required>
-                            <textarea name="message" rows="4" placeholder="Your Feedback or Song Request" required></textarea>
-                            <button type="submit">Submit</button>
-                        </form>
-                        <p id="response" style="text-align:center; margin-top:10px;"></p>
-                    </div>
-                `;
-
-                        // Add form submission handler
-                        const form = document.getElementById("feedbackForm");
-                        const responseMessage = document.getElementById("response");
-
-                        form.addEventListener("submit", function (event) {
-                            event.preventDefault();
-                            const formData = new FormData(form);
-
-                            fetch(form.action, {
-                                method: "POST",
-                                body: formData
-                            })
-                                .then(response => response.text())
-                                .then(data => {
-                                    responseMessage.textContent = "Thank you! Your feedback has been submitted.";
-                                    form.reset();
-                                })
-                                .catch(error => {
-                                    responseMessage.textContent = "Error submitting feedback. Please try again.";
-                                    console.error("Error:", error);
-                                });
-                        });
-                    }
-
-                    contentModal.style.display = "block";
-                });
-            });
-
-            // Close modal button handler
-            modalClose.addEventListener("click", () => {
-                contentModal.style.display = "none";
-            });
-
-            // Close modals when clicking outside
-            document.addEventListener("click", (e) => {
-                if (!moreModal.contains(e.target) && !moreButton.contains(e.target)) {
-                    moreModal.style.display = "none";
-                }
-                if (!contentModal.contains(e.target) && contentModal.style.display === "block" && !e.target.closest('.more-item')) {
-                    contentModal.style.display = "none";
-                }
-            });
 
             // State Management
             const AppState = {
@@ -650,6 +675,14 @@
                         this.favorites.push(albumId);
                     }
                     this.saveToLocalStorage('favorites', this.favorites);
+
+                    // Update UI
+                    const favoriteIcon = document.querySelector(`.favorite-icon[data-album-id="${albumId}"]`);
+                    if (favoriteIcon) {
+                        favoriteIcon.classList.toggle('active');
+                        favoriteIcon.title = favoriteIcon.classList.contains('active') ?
+                            'Remove from favorites' : 'Add to favorites';
+                    }
                 },
 
                 isFavorite(albumId) {
@@ -657,7 +690,11 @@
                 },
 
                 saveToLocalStorage(key, data) {
-                    localStorage.setItem(key, JSON.stringify(data));
+                    try {
+                        localStorage.setItem(key, JSON.stringify(data));
+                    } catch (error) {
+                        console.error('Error saving to localStorage:', error);
+                    }
                 }
             };
 
@@ -679,7 +716,7 @@
                     LoadingManager.show();
                     AppState.addToRecentlyViewed(albumId);
 
-                    // Simulate small delay for loading effect
+                    // Simulate loading effect
                     await new Promise(resolve => setTimeout(resolve, 500));
 
                     window.location.href = url;
@@ -690,7 +727,17 @@
                     LoadingManager.hide();
                 }
             }
+            document.querySelector('.search-button').addEventListener('click', () => {
+                document.querySelector('.search-bar').classList.toggle('active');
+                document.querySelector('.search-bar input').focus();
+            });
 
+            // Optional: Close search bar when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-bar')) {
+                    document.querySelector('.search-bar').classList.remove('active');
+                }
+            });
             // Album Rendering
             function renderAlbums(filteredAlbums) {
                 albumContainer.innerHTML = "";
@@ -705,21 +752,28 @@
                     albumElement.innerHTML = `
                 <div class="album-header">
                     <i class="fas fa-heart favorite-icon ${isFavorite ? 'active' : ''}" 
-                       data-album-id="${album.id}"></i>
+                       data-album-id="${album.id}"
+                       title="${isFavorite ? 'Remove from favorites' : 'Add to favorites'}"></i>
                 </div>
                 <img src="${album.cover}" alt="${album.name}" class="album-cover">
                 <div class="album-title">${album.name}</div>
                 <div class="album-artist">${album.artist}</div>
             `;
 
-                    // Add event listeners
-                    albumElement.querySelector('.favorite-icon').addEventListener('click', (e) => {
+                    // Add favorite icon event listener
+                    const favoriteIcon = albumElement.querySelector('.favorite-icon');
+                    favoriteIcon.addEventListener('click', (e) => {
                         e.stopPropagation();
                         AppState.toggleFavorite(album.id);
-                        renderAlbums(filteredAlbums);
                     });
 
-                    albumElement.addEventListener("click", () => handleUrlNavigation(album.url, album.id));
+                    // Add album click event
+                    albumElement.addEventListener("click", () => {
+                        if (album.url) {
+                            handleUrlNavigation(album.url, album.id);
+                        }
+                    });
+
                     fragment.appendChild(albumElement);
                 });
 
@@ -748,6 +802,63 @@
                 });
             }
 
+            // More Menu Functions
+            function handleMoreMenuClick(action) {
+                moreModal.style.display = "none";
+
+                if (action === "about") {
+                    modalContent.innerHTML = `
+                <h2>About FreeLoop</h2>
+                <p>FreeLoop is developed for educational purposes only. This platform aims to provide a hands-on learning
+                    experience in App development, focusing on UI/UX design, JavaScript functionality, and responsive design.</p>
+                <p>All content on this App is used strictly for non-commercial purposes. If you have any concerns or inquiries,
+                    feel free to contact us.</p>
+            `;
+                } else if (action === "feedback") {
+                    modalContent.innerHTML = `
+                <h2>Give Your Feedback</h2>
+                <div class="form-container">
+                    <form id="feedbackForm" action="https://usebasin.com/f/2cdcfe6cf4b2" method="POST">
+                        <input type="text" name="name" placeholder="Your Name" required>
+                        <input type="email" name="email" placeholder="Your Email" required>
+                        <textarea name="message" rows="4" placeholder="Your Feedback or Song Request" required></textarea>
+                        <button type="submit">Submit</button>
+                    </form>
+                    <p id="response" style="text-align:center; margin-top:10px;"></p>
+                </div>
+            `;
+
+                    setupFeedbackForm();
+                }
+
+                contentModal.style.display = "block";
+            }
+
+            // Setup Feedback Form
+            function setupFeedbackForm() {
+                const form = document.getElementById("feedbackForm");
+                const responseMessage = document.getElementById("response");
+
+                form.addEventListener("submit", function (event) {
+                    event.preventDefault();
+                    const formData = new FormData(form);
+
+                    fetch(form.action, {
+                        method: "POST",
+                        body: formData
+                    })
+                        .then(response => response.text())
+                        .then(data => {
+                            responseMessage.textContent = "Thank you! Your feedback has been submitted.";
+                            form.reset();
+                        })
+                        .catch(error => {
+                            responseMessage.textContent = "Error submitting feedback. Please try again.";
+                            console.error("Error:", error);
+                        });
+                });
+            }
+
             // Search Handler
             function handleSearch() {
                 const query = searchInput.value.toLowerCase();
@@ -755,7 +866,18 @@
                     album.name.toLowerCase().includes(query) ||
                     album.artist.toLowerCase().includes(query)
                 );
-                renderAlbums(filteredAlbums);
+                renderAlbums(sortAlbums(filteredAlbums));
+            }
+
+            // Sort albums by favorites
+            function sortAlbums(albumsToSort) {
+                return [...albumsToSort].sort((a, b) => {
+                    const aIsFavorite = AppState.isFavorite(a.id);
+                    const bIsFavorite = AppState.isFavorite(b.id);
+                    if (aIsFavorite && !bIsFavorite) return -1;
+                    if (!aIsFavorite && bIsFavorite) return 1;
+                    return 0;
+                });
             }
 
             // Event Listeners
@@ -769,18 +891,49 @@
                 }
             });
 
+            moreButton.addEventListener("click", (e) => {
+                e.preventDefault();
+                moreModal.style.display = moreModal.style.display === "block" ? "none" : "block";
+            });
+
+            document.querySelectorAll('.more-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    handleMoreMenuClick(item.dataset.action);
+                });
+            });
+
+            modalClose.addEventListener("click", () => {
+                contentModal.style.display = "none";
+            });
+
+            // Close modals when clicking outside
             document.addEventListener("click", (e) => {
                 if (!albumListModal.contains(e.target) && !albumListButton.contains(e.target)) {
                     albumListModal.style.display = "none";
                 }
+                if (!moreModal.contains(e.target) && !moreButton.contains(e.target)) {
+                    moreModal.style.display = "none";
+                }
+                if (!contentModal.contains(e.target) && contentModal.style.display === "block" && !e.target.closest('.more-item')) {
+                    contentModal.style.display = "none";
+                }
             });
 
-            // Update UI text from "Feedback" to "Album List"
-            document.querySelector('#feedbackButton span').textContent = 'Album List';
-            document.querySelector('#feedbackModal h3').textContent = 'Select an Album';
+            // Prevent zooming on mobile devices
+            document.addEventListener("keydown", function (event) {
+                if (event.ctrlKey && (event.key === "=" || event.key === "-" || event.key === "0")) {
+                    event.preventDefault();
+                }
+            });
+
+            document.addEventListener("wheel", function (event) {
+                if (event.ctrlKey) {
+                    event.preventDefault();
+                }
+            }, { passive: false });
 
             // Initialize the app
-            renderAlbums(albums);
+            renderAlbums(sortAlbums(albums));
         });
     </script>
 
