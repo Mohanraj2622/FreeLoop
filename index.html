@@ -447,7 +447,13 @@
             cursor: pointer;
             margin-top: 10px;
         }
-
+#visit-count {
+  color: #ff5733; /* Orange-red color */
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  display: inline-block;
+}
         /* Responsive Design */
         @media (max-width: 768px) {
             .album-container {
@@ -505,7 +511,7 @@
             </button>
         </div>
     </nav>
-
+ <p>Total User's: <span id="visit-count">Loading...</span></p>
     <!-- Album Container -->
     <div id="albumContainer" class="album-container"></div>
 
@@ -556,6 +562,13 @@
         <div id="modalContent"></div>
     </div>
     <script>
+          fetch("https://script.google.com/macros/s/AKfycbwRTuXI4PMjGI9lIqwK4Pih00i0kHsLw2pudIFLs13ESrXbfFGjIpFWP3qn8qCkiLbI8A/exec")
+    .then(response => response.text())
+    .then(count => {
+      document.getElementById("visit-count").textContent = count;
+    })
+    .catch(error => console.error("Error fetching visit count:", error));
+
         document.addEventListener("DOMContentLoaded", () => {
             // Album data structure
             const albums = [
