@@ -511,7 +511,6 @@
             </button>
         </div>
     </nav>
- <p>Total User's: <span id="visit-count">Loading...</span></p>
     <!-- Album Container -->
     <div id="albumContainer" class="album-container"></div>
 
@@ -553,6 +552,11 @@
                 <span>Submit Feedback</span>
                 <i class="fas fa-chevron-right"></i>
             </li>
+        <li class="more-item" data-action="#">
+        <span><p>Total User's: <span id="visit-count">Loading...</span></p></span>
+        <i class="fas fa-chevron-right"></i>
+      </li>
+      
         </ul>
     </div>
 
@@ -562,7 +566,7 @@
         <div id="modalContent"></div>
     </div>
     <script>
-          fetch("https://script.google.com/macros/s/AKfycbwRTuXI4PMjGI9lIqwK4Pih00i0kHsLw2pudIFLs13ESrXbfFGjIpFWP3qn8qCkiLbI8A/exec")
+    fetch("https://script.google.com/macros/s/AKfycbwRTuXI4PMjGI9lIqwK4Pih00i0kHsLw2pudIFLs13ESrXbfFGjIpFWP3qn8qCkiLbI8A/exec")
     .then(response => response.text())
     .then(count => {
       document.getElementById("visit-count").textContent = count;
